@@ -3,7 +3,9 @@ import InputGeneric from "@/components/InputGeneric/InputGeneric";
 import PrefixPhoneGeneric from "@/components/PrefixPhoneGeneric/PrefixPhoneGeneric";
 import useValidation from "@/hook/useValidation";
 import React, { useEffect, useRef } from "react";
-import UserValidationForm from "./validation/userValidationForm";
+import UserValidationForm, {
+  UserErrors,
+} from "./validation/userValidationForm";
 
 export default function FormContainer() {
   const {
@@ -58,14 +60,9 @@ export default function FormContainer() {
     console.log("Formulario enviado");
   }
 
-  const dangerName = errors.name ? "ring-1 ring-dangerColor" : "";
-  const dangerSurname = errors.surname ? "ring-1 ring-dangerColor" : "";
-  const dangerEmail = errors.email ? "ring-1 ring-dangerColor" : "";
-  const dangerPhone = errors.phone ? "ring-1 ring-dangerColor" : "";
-  const dangerPassword = errors.password ? "ring-1 ring-dangerColor" : "";
-  const dangerConfirmPassword = errors.confirmPassword
-    ? "ring-1 ring-dangerColor"
-    : "";
+  const errorStyles = (name: string) => {
+    return errors[name as keyof UserErrors] ? "ring-1 ring-dangerColor" : "";
+  };
 
   return (
     <section className="  px-0 gap-x-0 h-full">
@@ -83,7 +80,7 @@ export default function FormContainer() {
               <div className="flex gap-5 w-full">
                 <div className="w-full">
                   <InputGeneric
-                    inputClassName={`${dangerName}`}
+                    inputClassName={errorStyles("name")}
                     ref={nameInputRef}
                     label="Nombre*"
                     type={"text"}
@@ -101,7 +98,7 @@ export default function FormContainer() {
                 </div>
                 <div className="w-full">
                   <InputGeneric
-                    inputClassName={`${dangerSurname}`}
+                    inputClassName={errorStyles("surname")}
                     ref={surnameInputRef}
                     label="Apellidos*"
                     type={"text"}
@@ -121,7 +118,7 @@ export default function FormContainer() {
               </div>
               <div className=" w-full">
                 <InputGeneric
-                  inputClassName={`${dangerEmail}`}
+                  inputClassName={errorStyles("email")}
                   ref={emailInputRef}
                   label="Email*"
                   type={"email"}
@@ -157,7 +154,7 @@ export default function FormContainer() {
                   </div>
                   <div className="w-4/5">
                     <InputGeneric
-                      inputClassName={`${dangerPhone}`}
+                      inputClassName={errorStyles("phone")}
                       ref={phoneInputRef}
                       className="pt-4"
                       placeholder="Teléfono"
@@ -180,7 +177,7 @@ export default function FormContainer() {
               <div className="flex flex-col w-full">
                 <InputGeneric
                   ref={passwordInputRef}
-                  inputClassName={`${dangerPassword}`}
+                  inputClassName={errorStyles("password")}
                   label="Contraseña*"
                   type={"text"}
                   name="password"
@@ -196,7 +193,7 @@ export default function FormContainer() {
               <div className="flex flex-col w-full">
                 <InputGeneric
                   ref={confirmPasswordInputRef}
-                  inputClassName={`${dangerConfirmPassword}`}
+                  inputClassName={errorStyles("confirmPassword")}
                   label="Repetir contraseña*"
                   type={"text"}
                   name="confirmPassword"
